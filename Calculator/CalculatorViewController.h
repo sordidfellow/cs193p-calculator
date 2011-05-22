@@ -21,5 +21,6 @@
 
 - (IBAction) digitPressed:(UIButton *) sender;
 - (IBAction) operationPressed:(UIButton *) sender;
+- (IBAction) degRadToggle:(UISegmentedControl *) sender;
 
 @end

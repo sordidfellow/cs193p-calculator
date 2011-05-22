@@ -30,6 +30,9 @@
         NSRange range = [curStr rangeOfString:@"."];
         if (range.location == NSNotFound)
             [display setText:[curStr stringByAppendingString:digit]];
+    } else if ([digit isEqual:@"pi"]) {
+        NSString *piStr = [NSString stringWithFormat:@"%g", (22.0/7.0)];
+        [display setText:piStr];
     } else {
         [display setText:[curStr stringByAppendingString:digit]];
     }
@@ -42,11 +45,20 @@
 
 - (IBAction)operationPressed:(UIButton *)sender
 {
+    NSString *operation = [[sender titleLabel] text];
+
+    if ([operation isEqual:@"BS"]) {
+        NSString *curStr = [display text];
+        if (![curStr isEqual:@""])
+            [display setText:[curStr substringToIndex:([curStr length]-1)]];
+        return;
+    }
+        
     if (userIsInTheMiddleOfTypingANumber) {
         [[self brain] setOperand:[[display text] doubleValue]];
         userIsInTheMiddleOfTypingANumber = NO;
     }
-    NSString *operation = [[sender titleLabel] text];
+    
     double result = [[self brain] performOperation:operation];
     [display setText:[NSString stringWithFormat:@"%g", result]];
     
@@ -57,7 +69,13 @@
 }
 
 
-
+- (IBAction) degRadToggle:(UISegmentedControl *) sender;
+{
+    if ([sender selectedSegmentIndex] == 1)
+        [[self brain] setUseDegrees:YES];
+    else
+        [[self brain] setUseDegrees:NO];    
+}
 
 
 

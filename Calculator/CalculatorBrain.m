@@ -11,6 +11,15 @@
 
 @implementation CalculatorBrain
 
+- (void) showWarningWithTitle:(NSString *)title andMessage:(NSString *)message
+{
+    UIAlertView *alert = [[UIAlertView alloc] init];
+    [alert setTitle:title];
+    [alert setMessage:message];
+    [alert addButtonWithTitle:@"OK"];
+    [alert show];
+}
+
 - (void) setOperand:(double)anOperand
 {
     operand = anOperand;
@@ -27,6 +36,8 @@
     } else if ([@"/" isEqual:waitingOperation]) {
         if (operand) 
             operand = waitingOperand / operand;
+        else
+            [self showWarningWithTitle:@"Error" andMessage:@"Cannot divide by 0"];
     }
 }
 
@@ -44,10 +55,18 @@
     } else if ([operation isEqual:@"1/x"]) {
         if (operand)
             operand = 1/operand;
+        else
+            [self showWarningWithTitle:@"Error" andMessage:@"Cannot divide by 0"];
     } else if ([operation isEqual:@"sin"]) {
-        operand = sin(operand);
+        if (useDegrees)
+            operand = sin(operand*(22.0/7.0/180.0));
+        else
+            operand = sin(operand);
     } else if ([operation isEqual:@"cos"]) {
-        operand = cos(operand);
+        if (useDegrees)
+            operand = cos(operand*(22.0/7.0/180.0));
+        else
+            operand = cos(operand);
     } else if ([operation isEqual:@"store"]) {
         memory = operand;
     } else if ([operation isEqual:@"recall"]) {
@@ -60,6 +79,11 @@
         waitingOperand = operand;
     }
     return operand;
+}
+
+- (void) setUseDegrees:(BOOL) shouldUseDegrees
+{
+    useDegrees = shouldUseDegrees;
 }
 
 - (double) getOperand 

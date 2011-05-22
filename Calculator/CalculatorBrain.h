@@ -14,10 +14,12 @@
     NSString * waitingOperation;
     double waitingOperand;
     double memory;
+    BOOL useDegrees;
 }
 
 - (void) setOperand:(double) anOperand;
 - (double) performOperation:(NSString *) operation;
+- (void) setUseDegrees:(BOOL) shouldUseDegrees;
 
 - (double) getOperand;
 - (NSString *) getWaitingOperation;
